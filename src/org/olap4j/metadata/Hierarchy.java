@@ -90,6 +90,61 @@ public interface Hierarchy extends MetadataElement {
      * @throws OlapException on database error
      */
     NamedList<Member> getRootMembers() throws OlapException;
+
+    /**
+     * Returns the structure of this <code>Hierarchy</code>.
+     *
+     * @return hierarchy structure
+     */
+    Structure getStructure();
+
+    /**
+     * Enumeration of the structures of a <code>Hierarchy</code>.
+     *
+     * @see Hierarchy#getStructure
+     */
+    enum Structure implements XmlaConstant {
+        FULLYBALANCED(0),
+        RAGGEDBALANCED(1),
+        UNBALANCED(2),
+        NETWORK(3);
+
+        private final int xmlaOrdinal;
+
+        private static final Dictionary<Structure> DICTIONARY =
+            DictionaryImpl.forClass(Structure.class);
+
+        /**
+         * Per {@link org.olap4j.metadata.XmlaConstant}, returns a dictionary
+         * of all values of this enumeration.
+         *
+         * @return Dictionary of all values
+         */
+        public static Dictionary<Structure> getDictionary() {
+            return DICTIONARY;
+        }
+
+        /**
+         * Creates a Hierarchy Structure.
+         *
+         * @param xmlaOrdinal Ordinal code as specified by XMLA
+         */
+        private Structure(int xmlaOrdinal) {
+            this.xmlaOrdinal = xmlaOrdinal;
+        }
+
+        public String xmlaName() {
+            return "MD_STRUCTURE_" + name();
+        }
+
+        public String getDescription() {
+            return "";
+        }
+
+        public int xmlaOrdinal() {
+            return xmlaOrdinal;
+        }
+    }
 }
 
 // End Hierarchy.java
